@@ -247,7 +247,6 @@ public class DA339A_U1 {
    * @param newName The new name of the guest at place given by index.
    */
   public static void changeNamneOfGuest(int index, String newName) {
-    index = isInteger(index, "Enter guest's seat number:");
     for (int i = 0; i < guestList.length; i++) {
       guestList[index][0] = newName;
     }
@@ -265,15 +264,6 @@ public class DA339A_U1 {
    * @param newAge The new age, as a String, of the guest at place given by index.
    */
   public static void changeAgeOfGuest(int index, String newAge) {
-    printGuestList();
-    System.out.println("Enter guest's new age:");
-    newAge = input.next();
-    while (!containsDigits(newAge)) {
-      System.out.println("WHOOPS! Age must be a number.");
-      newAge = input.next();
-    }
-    index = isInteger(index, "Enter guest's seat number:");
-
     for (int i = 0; i < guestList.length; i++) {
       guestList[index][1] = newAge;
     }
@@ -288,8 +278,6 @@ public class DA339A_U1 {
    * @param index The index of the place where a guest is to be removed.
    */
   public static void removeGuest(int index) {
-    printGuestList();
-    index = isInteger(index, "Enter the guest number you'd like to remove:");
     for (int i = 0; i < guestList.length; i++) {
       if (i == index) {
         guestList[i][1] = "";
@@ -312,15 +300,18 @@ public class DA339A_U1 {
    * @param index2 Second index involved in the change of places
    */
   public static void changePlaces(int index1, int index2) {
+    // TODO
     printGuestList();
-    index1 = canGuestSeatThere(index2, "Enter the number of the first guest you'd like to move:");
+    // index1 = canGuestSeatThere(index1, "Enter the number of the first guest you'd
+    // like to move:");
     String[] guestOnHold;
     guestOnHold = new String[2];
 
     guestOnHold[0] = guestList[index1][0];
     guestOnHold[1] = guestList[index1][1];
 
-    index2 = canGuestSeatThere(index2, "Enter the number of the second guest you'd like to move:");
+    // index2 = canGuestSeatThere(index2, "Enter the number of the second guest
+    // you'd like to move:");
 
     while (index1 == index2) {
       System.out.println("WHOOPS! That guest already sits on that spot. Choose another seat to move them.");
@@ -398,7 +389,6 @@ public class DA339A_U1 {
   }
 
   public static boolean containsDigits(String age) {
-
     for (int i = 0; i < age.length(); i++) {
       char c = age.charAt(i);
       if (!Character.isDigit(c)) {
@@ -487,14 +477,26 @@ public class DA339A_U1 {
           printGuestList();
           System.out.println("Enter guest's new name:");
           String newName = input.next();
-          int index = -1;
+          int index = isInteger(option, "Enter guest seat number:");
           changeNamneOfGuest(index, newName);
           printGuestInformation();
           isRunning = true;
           break;
         case 3:
-          String newAge = "";
-          index = -1;
+          printGuestList();
+          System.out.println("Enter guest's new age:");
+          String newAge = input.next();
+          while (!containsDigits(newAge)) {
+            System.out.println("WHOOPS! Age must be a number.");
+            newAge = input.next();
+            System.out.println();
+          }
+          // Jag använder while-loopen här för att annars skulle programmet hoppa över
+          // direkt till "enter seat number"
+          // utan att hantera fel inputen från newAge. Om användaren skrev in en ogiligt
+          // input för både newAge och index
+          // skulle programmet hantera båda två i slutet, vilket är mycket förvirrande
+          index = isInteger(option, "Enter guest's seat number:");
           changeAgeOfGuest(index, newAge);
           printGuestInformation();
           isRunning = true;
@@ -518,14 +520,16 @@ public class DA339A_U1 {
           isRunning = true;
           break;
         case 7:
-          index = -1;
+          printGuestList();
+          index = isInteger(option, "Enter the guest number you'd like to remove:");
           removeGuest(index);
           printGuestList();
           isRunning = true;
           break;
         case 8:
-          int index1 = -1;
-          int index2 = -1;
+          // TODO
+          int index1 = canGuestSeatThere(option, "Enter the number of the first guest you'd like to move:");
+          int index2 = canGuestSeatThere(option, "Enter the number of the second guest you'd like to move:");
           changePlaces(index1, index2);
           System.out.println();
           printGuestList();
