@@ -212,18 +212,19 @@ public class DA339A_U1 {
       int parsedSeat = -1;
       boolean inputIsInvalid = true;
       while (inputIsInvalid) {
-        System.out.println("WHOOPS! Make sure you entered a valid seat number.");
-        vacantSeatIndex = input.next();
         if (!containsDigits(vacantSeatIndex)) {
+          System.out.println("WHOOPS! Make sure you entered a number.");
+          vacantSeatIndex = input.next();
           continue;
         }
         parsedSeat = Integer.parseInt(vacantSeatIndex);
         if (parsedSeat > guestList.length) {
+          System.out.println("WHOOPS! Make sure you entered a valid seat number.");
+          vacantSeatIndex = input.next();
           continue;
         }
         inputIsInvalid = false;
       }
-
       printGuestList();
 
       while (guestList[parsedSeat][0] != "") {
