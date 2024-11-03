@@ -63,7 +63,7 @@ public class DA339A_U1 {
   public static void printGuestList() {
     for (int names = 0; names < guestList.length; names++) {
       System.out.printf("%s ", names);
-      for (int ages = 0; ages < guestList[0].length; ages++) { // unnecessary loop
+      for (int ages = 0; ages < guestList[names].length; ages++) {
         if (guestList[names][ages] == "") {
           System.out.printf("%5s", "[vacant]");
         }
@@ -91,13 +91,12 @@ public class DA339A_U1 {
     int totalGuestCount = 0;
 
     for (int names = 0; names < guestList.length; names++) {
-      for (int ages = 0; ages < guestList[0].length; ages++) {
+      for (int ages = 0; ages < guestList[names].length; ages++) {
         if (guestList[names][ages] != "") {
           guestCount++;
           totalGuestCount = guestCount;
           break;
         }
-
       }
     }
 
@@ -210,14 +209,19 @@ public class DA339A_U1 {
       printGuestList();
       System.out.println();
       vacantSeatIndex = input.next();
-      while (!containsDigits(vacantSeatIndex)) {
+      int parsedSeat = -1;
+      boolean inputIsInvalid = true;
+      while (inputIsInvalid) {
         System.out.println("WHOOPS! Make sure you entered a valid seat number.");
         vacantSeatIndex = input.next();
-      }
-      int parsedSeat = Integer.parseInt(vacantSeatIndex);
-      while (parsedSeat > guestList.length) {
-        System.out.println("WHOOPS! Make sure you entered a valid seat number.");
-        parsedSeat = input.nextInt();
+        if (!containsDigits(vacantSeatIndex)) {
+          continue;
+        }
+        parsedSeat = Integer.parseInt(vacantSeatIndex);
+        if (parsedSeat > guestList.length) {
+          continue;
+        }
+        inputIsInvalid = false;
       }
 
       printGuestList();
@@ -300,18 +304,13 @@ public class DA339A_U1 {
    * @param index2 Second index involved in the change of places
    */
   public static void changePlaces(int index1, int index2) {
-    // TODO
     printGuestList();
-    // index1 = canGuestSeatThere(index1, "Enter the number of the first guest you'd
-    // like to move:");
+
     String[] guestOnHold;
     guestOnHold = new String[2];
 
     guestOnHold[0] = guestList[index1][0];
     guestOnHold[1] = guestList[index1][1];
-
-    // index2 = canGuestSeatThere(index2, "Enter the number of the second guest
-    // you'd like to move:");
 
     while (index1 == index2) {
       System.out.println("WHOOPS! That guest already sits on that spot. Choose another seat to move them.");
@@ -504,7 +503,6 @@ public class DA339A_U1 {
         case 4:
           printGuestInformation();
           System.out.println();
-          System.out.println();
           isRunning = true;
           break;
         case 5:
@@ -527,7 +525,6 @@ public class DA339A_U1 {
           isRunning = true;
           break;
         case 8:
-          // TODO
           int index1 = canGuestSeatThere(option, "Enter the number of the first guest you'd like to move:");
           int index2 = canGuestSeatThere(option, "Enter the number of the second guest you'd like to move:");
           changePlaces(index1, index2);
