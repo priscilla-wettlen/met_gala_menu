@@ -218,18 +218,24 @@ public class DA339A_U1 {
           continue;
         }
         parsedSeat = Integer.parseInt(vacantSeatIndex);
-        if (parsedSeat > guestList.length) {
+        if (parsedSeat >= guestList.length) {
           System.out.println("WHOOPS! Make sure you entered a valid seat number.");
           vacantSeatIndex = input.next();
           continue;
         }
+
         inputIsInvalid = false;
       }
       printGuestList();
 
       while (guestList[parsedSeat][0] != "") {
         System.out.println("WHOOPS! That seat is already taken. Please select another one.");
-        parsedSeat = input.nextInt();
+        parsedSeat = isSeatTaken(parsedSeat, "Chose seat: ");
+        // Skapade ny metod isSeatTaken. Om jag hade använt metoden isInteger skulle
+        // programmet inte tillåta mig att
+        // välja en (giltigt) tom plats eftersom den har en condition som kollar efter
+        // toma platser och som jag använder
+        // i andra metoder, t.ex. ändra namn eller ålder
       }
 
       guestList[parsedSeat][0] = newGuest[0];
@@ -421,6 +427,33 @@ public class DA339A_U1 {
       if (guestList[num][0] == "") {
         System.out.println("WHOOPS! Please enter a valid seat number.");
         continue;
+      } else {
+        isValidInput = true;
+      }
+
+    }
+
+    return num;
+  }
+
+  public static int isSeatTaken(int num, String message) {
+    boolean isValidInput = false;
+
+    while (!isValidInput) {
+      System.out.println(message);
+
+      if (!input.hasNextInt()) {
+        System.out.println("WHOOPS! Please enter a valid number.");
+        input.next();
+        continue;
+      }
+
+      num = input.nextInt();
+
+      if (num >= guestList.length) {
+        System.out.println("WHOOPS! Please enter a valid seat number.");
+        continue;
+
       } else {
         isValidInput = true;
       }
